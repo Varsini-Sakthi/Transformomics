@@ -1,4 +1,3 @@
-# !!! PLACEHOLDER GENE LISTS - REPLACE WITH YOUR OWN PROGRAMME MODULES !!!
 # These are generic, commonly used microglia markers written from general knowledge so the
 # pipeline runs end-to-end. They are NOT the gene modules from your pseudobulk analysis.
 # Paste the real lists for your four programmes (mouse gene symbols, case-sensitive).
