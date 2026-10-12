@@ -1,0 +1,6 @@
+method,mean,sd_over_folds,n_folds
+ridge_own,0.6863,0.0779,4
+ridge_own_nbr_mean,0.7136,0.0732,4
+transformer_none,0.6671,0.0755,4
+transformer_real,0.7271,0.0665,4
+transformer_shuffled,0.6715,0.0767,4

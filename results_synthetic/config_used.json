@@ -1,0 +1,53 @@
+{
+  "task": "program",
+  "data": {
+    "path": null,
+    "label_key": null,
+    "spatial_key": "spatial",
+    "already_log": false
+  },
+  "preprocess": {
+    "n_hvg": 2000,
+    "target_sum": 10000.0,
+    "min_cells": 3
+  },
+  "programs_file": null,
+  "mask_program_genes": true,
+  "restrict": null,
+  "neighbors": {
+    "k": 6
+  },
+  "model": {
+    "embed_dim": 64,
+    "heads": 4,
+    "layers": 2,
+    "ff_dim": 128,
+    "dropout": 0.1,
+    "dist_bias": true
+  },
+  "train": {
+    "epochs": 25,
+    "batch_size": 64,
+    "lr": 0.001,
+    "weight_decay": 0.01,
+    "patience": 8,
+    "rot_aug": true
+  },
+  "cv": {
+    "n_blocks": 24,
+    "n_folds": 4,
+    "seeds": [
+      0
+    ],
+    "buffer": true
+  },
+  "variants": [
+    "real",
+    "shuffled",
+    "none"
+  ],
+  "baselines": [
+    "own",
+    "own_nbr_mean"
+  ]
+}

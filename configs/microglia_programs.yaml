@@ -1,0 +1,14 @@
+# !!! PLACEHOLDER GENE LISTS - REPLACE WITH YOUR OWN PROGRAMME MODULES !!!
+# These are generic, commonly used microglia markers written from general knowledge so the
+# pipeline runs end-to-end. They are NOT the gene modules from your pseudobulk analysis.
+# Paste the real lists for your four programmes (mouse gene symbols, case-sensitive).
+# Rule of thumb: >= 8-10 genes per programme, and report how many are detected (the run
+# writes programme_gene_coverage.csv).
+programs:
+  homeostatic:       [P2ry12, Tmem119, Cx3cr1, Hexb, Sall1, Csf1r, Siglech, Olfml3, Selplg, Fcrls]
+  phagocytic:        [Cd68, Lgals3, Trem2, Tyrobp, Axl, Itgax, Cst7, Lpl, Clec7a, Cd9]
+  nrf2_hmox1:        [Hmox1, Nqo1, Gclm, Gclc, Txnrd1, Srxn1, Fth1, Ftl1, Slc7a11, Sqstm1]
+  apoc1_chemokine:   [Apoc1, Apoe, Ccl2, Ccl3, Ccl4, Ccl5, Cxcl10, Cxcl16, Spp1, Lyz2]
+
+# Used only for the optional "restrict" step (keep microglia-rich spots as query spots).
+microglia_markers: [P2ry12, Tmem119, Cx3cr1, Csf1r, Hexb, Sall1]

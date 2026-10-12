@@ -1,0 +1,10 @@
+gradio
+torch
+scanpy
+anndata
+numpy
+pandas
+scikit-learn
+umap-learn
+matplotlib
+seaborn

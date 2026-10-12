@@ -1,0 +1,8 @@
+# Re-runs the original v1 task (predict Cell Ranger cluster) under the new, stricter protocol
+# (spatial-block CV, shuffled-neighbor control, neighbor-mean baseline).
+# Put the clusters in adata.obs['cluster'] first (merge Cell Ranger's clusters.csv by barcode).
+task: label
+data:
+  path: data/visium_brain_raw.h5ad
+  label_key: cluster
+cv: {n_blocks: 24, n_folds: 5, seeds: [0, 1, 2], buffer: true}

@@ -1,0 +1,6 @@
+A,B,mean_diff_A_minus_B,sd_over_folds,folds_A_better
+transformer_real,transformer_shuffled,0.0556,0.0113,4/4
+transformer_real,transformer_none,0.06,0.0111,4/4
+transformer_real,ridge_own_nbr_mean,0.0135,0.0081,4/4
+transformer_real,ridge_own,0.0408,0.0134,4/4
+ridge_own_nbr_mean,ridge_own,0.0273,0.0053,4/4

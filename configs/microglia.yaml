@@ -1,0 +1,19 @@
+# Predict microglial programme scores from a spot's own expression + its spatial neighborhood.
+task: program
+
+data:
+  path: data/your_spatial_sample.h5ad      # raw counts in .X, coordinates in .obsm['spatial']
+  spatial_key: spatial
+  already_log: false
+
+programs_file: configs/microglia_programs.yaml
+mask_program_genes: true                  # programme genes are removed from the model input
+
+# Visium spots are multi-cell; keep only microglia-rich spots as query spots (neighbors stay unrestricted).
+# Remove this block for single-cell-resolution data that is already microglia-only.
+restrict:
+  markers: [P2ry12, Tmem119, Cx3cr1, Csf1r, Hexb, Sall1]
+  quantile: 0.5
+
+neighbors: {k: 6}                          # use ~8-15 for single-cell-resolution (MERFISH/Xenium)
+cv: {n_blocks: 24, n_folds: 5, seeds: [0, 1, 2], buffer: true}
