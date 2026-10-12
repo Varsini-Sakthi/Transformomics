@@ -2,14 +2,14 @@
 
 # Transformomics - Spatially Aware Cell State Prediction
 
-[![Hugging Face Spaces](https://img.shields.io/badge/🤗%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/Varsini-Sakthi/Spatialformer)
+[![Hugging Face Spaces](https://img.shields.io/badge/🤗%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/Varsini-Sakthi/Transformomics)
 [![Python 3.10](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-red.svg)](https://pytorch.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A spatially aware transformer that integrates **gene expression** and **spatial neighborhood context** to predict cell cluster identity in spatial transcriptomics data. Built on a 10x Genomics Visium mouse brain dataset.
 
-🔗 **Live Demo**: [huggingface.co/spaces/Varsini-Sakthi/Spatialformer](https://huggingface.co/spaces/Varsini-Sakthi/Spatialformer)
+🔗 **Live Demo**: [huggingface.co/spaces/Varsini-Sakthi/Transformomics](https://huggingface.co/spaces/Varsini-Sakthi/Transformomics)
 
 ---
 
@@ -121,8 +121,8 @@ pip install torch scanpy anndata scikit-learn xgboost umap-learn gradio matplotl
 ### Run the app locally
 
 ```bash
-git clone https://huggingface.co/spaces/Varsini-Sakthi/Spatialformer
-cd Spatialformer
+git clone https://huggingface.co/spaces/Varsini-Sakthi/Transformomics
+cd Transformomics
 python app.py
 ```
 
