@@ -10,7 +10,7 @@ from torch import nn
 import umap
 import pandas as pd
 
-class SpatialTransformer(nn.Module):
+class Transformomics(nn.Module):
     def __init__(self, input_dim, num_classes, embed_dim=64,
                  num_heads=4, num_layers=2, ff_dim=128, 
                  dropout=0.1, max_token_types=3):
@@ -37,7 +37,7 @@ class SpatialTransformer(nn.Module):
 device = torch.device("cpu")
 ckpt = torch.load("checkpoints/inference_pipeline.pt", map_location=device)
 cfg = ckpt["config"]
-model = SpatialTransformer(**cfg).to(device)
+model = Transformomics(**cfg).to(device)
 model.load_state_dict(ckpt["model_state"])
 model.eval()
 

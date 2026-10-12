@@ -66,7 +66,7 @@ Token type (CLS/query/nbr)  ──► Embedding lookup  ──┘
 | Logistic Regression | 0.9232 | 0.9176 |
 | MLP (512, 256) | 0.9107 | 0.8992 |
 | XGBoost | 0.8982 | 0.8858 |
-| **SpatialTransformer** | **0.8911** | **0.8795** |
+| **Transformomics** | **0.8911** | **0.8795** |
 
 > The transformer achieves competitive performance while additionally providing spatial attention maps and neighborhood-aware embeddings - interpretability that purely expression-based models lack.
 
@@ -113,8 +113,8 @@ transformomics/
 ### Installation
 
 ```bash
-conda create -n spaformer python=3.10
-conda activate spaformer
+conda create -n transformomics python=3.10
+conda activate transformomics
 pip install torch scanpy anndata scikit-learn xgboost umap-learn gradio matplotlib seaborn
 ```
 
@@ -145,7 +145,7 @@ Open `Spatially Aware Cell State Prediction.ipynb` and run all cells in order. T
 2. QC, normalization, HVG selection
 3. Spatial k-NN graph construction (k=6)
 4. Token sequence assembly
-5. SpatialTransformer training (30 epochs, early stopping)
+5. Transformomics training (30 epochs, early stopping)
 6. Baseline comparisons
 7. Attention weight extraction
 8. Gene saliency analysis
