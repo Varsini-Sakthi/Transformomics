@@ -58,8 +58,13 @@ class Transformomics(nn.Module):
         self.norm = nn.LayerNorm(embed_dim)
         self.head = nn.Linear(embed_dim, out_dim)
 
-    def forward(self, xq, xn, offsets, use_neighbors: bool = True, return_attn: bool = False):
-        """xq [B,G], xn [B,k,G], offsets [B,k,2] -> output [B,out_dim] (and attention list)."""
+    def forward(self, xq, xn, offsets, use_neighbors: bool = True, return_attn: bool = False,
+                nbr_mask=None):
+        """xq [B,G], xn [B,k,G], offsets [B,k,2] -> output [B,out_dim] (and attention list).
+
+        ``nbr_mask`` (optional bool [B,k], True = keep) hides individual neighbour tokens from
+        attention; used by the deletion/faithfulness tests. Ignored when ``use_neighbors`` is False.
+        """
         B, k, _ = xn.shape
         expr = self.expr_proj(torch.cat([xq.unsqueeze(1), xn], 1))             # [B,1+k,d]
         zero = offsets.new_zeros(B, 1, 2)
@@ -77,6 +82,8 @@ class Transformomics(nn.Module):
         key_mask = torch.ones(B, 2 + k, dtype=torch.bool, device=xq.device)
         if not use_neighbors:
             key_mask[:, 2:] = False
+        elif nbr_mask is not None:
+            key_mask[:, 2:] = nbr_mask.to(device=xq.device, dtype=torch.bool)
 
         attns = []
         for blk in self.blocks:

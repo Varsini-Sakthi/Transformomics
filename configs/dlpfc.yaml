@@ -1,0 +1,17 @@
+# Human DLPFC (Maynard et al. 2021): 12 Visium sections, 3 donors, manual layer labels (non-circular).
+# Prepare data first:  see docs/DATASETS.md  (scripts/export_dlpfc.R, then scripts/make_manifest.py)
+task: label
+manifest: data/dlpfc/manifest.yaml
+markers_file: configs/dlpfc_markers.yaml
+
+split:
+  by: donor            # adjacent sections of one donor are near-duplicates -> never split them
+  val_mode: auto       # 3 donors -> 'block' validation inside training donors (test donor is never touched)
+neighbors: {k: 6}
+preprocess: {n_hvg: 2000}
+seeds: [0, 1, 2]
+
+analyses:
+  boundary:     {enabled: true, min_frac: 0.3333, n_perm: 999}   # boundary = >=2/6 neighbours differ; interior = 0
+  saliency:     {enabled: true, max_spots_per_class: 200, ig_steps: 16, n_null: 1000, min_spots: 30}
+  faithfulness: {enabled: true, deletion_m: [1, 2, 3]}

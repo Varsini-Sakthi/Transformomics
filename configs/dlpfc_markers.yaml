@@ -1,0 +1,14 @@
+# STARTER marker sets for DLPFC layers - NOT authoritative.
+# Before drawing conclusions, replace with sets derived from independent data (e.g. spatialLIBD's
+# layer-enriched statistics, or a cortical snRNA-seq atlas) and fix them BEFORE running the analysis.
+# Sets of 1-4 genes have little statistical power; markers missing from the model's HVG input are
+# reported as n_in_input < n_listed, never silently dropped.
+# Class names must match the labels in your data (spatialLIBD uses Layer1..Layer6 and WM).
+markers:
+  WM:     [MBP, PLP1, MOBP, MAG, MOG]
+  Layer1: [RELN]
+  Layer2: [CUX2]
+  Layer3: [CUX2]
+  Layer4: [RORB]
+  Layer5: [BCL11B, FEZF2]
+  Layer6: [FOXP2, TLE4, NR4A2]

@@ -5,3 +5,7 @@ __pycache__/
 data/
 results/
 .DS_Store
+
+results_*/
+!results_synthetic/
+.venv/

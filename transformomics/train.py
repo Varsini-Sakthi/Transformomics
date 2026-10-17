@@ -9,6 +9,7 @@ import torch
 import torch.nn as nn
 from sklearn.metrics import accuracy_score, f1_score
 
+from .interpret import rollout_cls_row
 from .model import Transformomics
 
 
@@ -40,13 +41,20 @@ def shuffled_neighbors(n: int, k: int, seed: int) -> np.ndarray:
 
 
 def fit_predict(T: Tensors, tr, va, te, task: str, mcfg: dict, tcfg: dict, seed: int,
-                mode: str = "real", n_classes: int | None = None, want_attn: bool = False):
+                mode: str = "real", n_classes: int | None = None, want_attn: bool = False,
+                want_spot_attn: bool = False, return_model: bool = False):
     """Train on ``tr``, early-stop on ``va`` loss, predict ``te``.
 
     mode: 'real'     - true spatial neighbors
           'shuffled' - random spots as neighbors (same compute, no spatial info)
           'none'     - neighbor tokens masked out of attention (single-spot model)
     Returns (pred [len(te), out], extras dict).
+
+    want_attn       - add ``nbr_attn_mass`` (mean last-layer CLS attention on neighbour tokens).
+    want_spot_attn  - also add per-spot ``attn_last`` and ``attn_rollout`` arrays [len(te), 2+k]
+                      (token order: CLS, query, nbr1..nbrk). Needs ``want_attn``.
+    return_model    - add the trained model (eval mode) as ``extras['model']`` and the neighbour
+                      array actually used as ``extras['nbr']`` (differs from T.nbr_idx if shuffled).
     """
     torch.manual_seed(seed)
     np.random.seed(seed)
@@ -101,7 +109,7 @@ def fit_predict(T: Tensors, tr, va, te, task: str, mcfg: dict, tcfg: dict, seed:
     extras = {"val_loss": best}
     if want_attn and use_nb and len(te):
         model.eval()
-        masses = []
+        masses, lasts, rolls = [], [], []
         with torch.no_grad():
             for s in range(0, len(te), 256):
                 b = te[s:s + 256]
@@ -109,7 +117,16 @@ def fit_predict(T: Tensors, tr, va, te, task: str, mcfg: dict, tcfg: dict, seed:
                 _, att = model(xq, xn, off, use_neighbors=True, return_attn=True)
                 cls_row = att[-1][:, :, 0, :].mean(1)          # last layer, mean over heads
                 masses.append(cls_row[:, 2:].sum(1))           # CLS -> all neighbor tokens
+                if want_spot_attn:
+                    lasts.append(cls_row.cpu().numpy())
+                    rolls.append(rollout_cls_row([a.cpu().numpy() for a in att]))
         extras["nbr_attn_mass"] = float(torch.cat(masses).mean())
+        if want_spot_attn:
+            extras["attn_last"] = np.vstack(lasts)
+            extras["attn_rollout"] = np.vstack(rolls)
+    if return_model:
+        model.eval()
+        extras["model"], extras["nbr"] = model, nbr
     return pred, extras
 
 
