@@ -1,0 +1,19 @@
+# 5xFAD / WT Visium time course (GEO GSE174321; see docs/DATASETS.md - check coordinates are available).
+# Programme-score task on microglia-rich spots. Sections: 3- and 7-month, WT and 5xFAD, n=2 each.
+task: program
+manifest: data/5xfad/manifest.yaml            # label_key may be a Seurat-cluster column or null
+programs_file: configs/microglia_programs.yaml
+mask_program_genes: true
+# Query spots = top half of a microglia-marker score within each section; neighbours stay unrestricted.
+# CAUTION: these markers overlap the homeostatic programme genes, which truncates the range of that target.
+restrict: {markers: [P2ry12, Tmem119, Cx3cr1, Csf1r, Hexb, Sall1], quantile: 0.5}
+
+split:
+  by: section          # sections are independent animals/slices here; use 'donor' if you add animal IDs
+  val_mode: group      # 8 sections -> validate on a whole held-out section
+neighbors: {k: 6}
+seeds: [0, 1, 2]
+analyses:
+  boundary:     {enabled: true, min_frac: 0.3333, n_perm: 999}   # needs label_key (e.g. anatomical cluster)
+  saliency:     {enabled: false}                                 # label-task analysis
+  faithfulness: {enabled: true, deletion_m: [1, 2, 3]}

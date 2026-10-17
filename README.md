@@ -60,6 +60,34 @@ Input: `.h5ad` with raw counts in `.X` and coordinates in `.obsm['spatial']`.
 Outputs in `--out`: `results.csv`, `summary.csv`, `paired_comparisons.csv`, `programme_spatial_stats.csv`,
 `programme_gene_coverage.csv`, `summary.md`, `config_used.json`.
 
+## Real-data experiments (v2.1: multi-section, boundary, saliency, faithfulness)
+
+New in v2.1 (all additive; the single-section pipeline above is unchanged):
+
+| Module | What it does |
+|---|---|
+| `multisection.py` | Per-section graphs (no cross-section neighbours), training-only HVG/z-score, leave-one-donor/section-out splits |
+| `run_multi.py` | Driver: transformer arms + linear baselines per held-out group, **per-spot** losses/attention |
+| `boundary.py` | Boundary vs interior tests on attention *and* on neighbour benefit, adjusted for ambiguity/edge/label/section, with per-group consistency |
+| `marker_enrichment.py` | Rank-AUC of attribution scores for marker sets vs expression-matched random sets; logreg/DE baselines |
+| `interpret.py` | Attention rollout, class-contrastive integrated gradients (query **and** neighbour tokens), deletion test |
+| `faithfulness.py` | Does attention put weight on same-domain neighbours more than uniform / inverse-distance / expression-cosine weights? |
+| `synthetic_sections.py` | Synthetic multi-section data with planted domains, mixed boundaries, marker genes (plumbing control) |
+
+```bash
+python -m transformomics.run_multi --synthetic --quick --out results_synth_multi     # plumbing test
+python -m transformomics.run_multi --config configs/dlpfc.yaml --out results_dlpfc    # real data (see docs/DATASETS.md)
+python -m transformomics.run_multi --config configs/dlpfc.yaml --null-coords 1 --out results_dlpfc_null   # artefact floor
+```
+Read `docs/PREREGISTRATION.md` first and fill in thresholds before running on real data. The claims on
+boundaries, marker agreement and interpretability are **hypotheses with tests**, not results; none has been
+run on real tissue yet.
+
+Status of the tests: the numpy/pandas parts (loading, splits, boundary stats incl. a null-calibration test,
+marker enrichment, faithfulness, assembly) are unit-tested. The torch-dependent parts (`nbr_mask`,
+integrated-gradients completeness, per-spot attention, `fit_predict` extras, an end-to-end tiny run) have
+tests in `tests/test_multi.py` that run when torch is installed (`pytest -q`).
+
 ## Suggested next steps
 
 1. Replace placeholder genes with your modules; run on the v1 Visium section as a first look.
